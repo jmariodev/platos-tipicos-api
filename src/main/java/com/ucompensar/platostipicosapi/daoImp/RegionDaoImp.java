@@ -10,7 +10,7 @@ import java.util.List;
 public class RegionDaoImp{
     public List<Region> listarTodos() {
         try (EntityManager em = JPAUtil.getEntityManager()) {
-            return new RegionDao(em, Region.class).listarTodos();
+            return new RegionDao(em, Region.class).findAll();
         }
     }
 }

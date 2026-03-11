@@ -1,7 +1,6 @@
 package com.ucompensar.platostipicosapi.dao;
 
 import jakarta.persistence.EntityManager;
-
 import java.util.List;
 
 public abstract class GenericDAO<T, ID> {
@@ -14,35 +13,61 @@ public abstract class GenericDAO<T, ID> {
         this.entityClass = entityClass;
     }
 
-    public void crear(T entidad) {
-        em.getTransaction().begin();
-        em.persist(entidad);
-        em.getTransaction().commit();
+    public void create(T entity) {
+        try {
+            em.getTransaction().begin();
+            em.persist(entity);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Error creando entidad", e);
+        }
     }
 
-    public T buscarPorId(ID id) {
+    public T findById(ID id) {
         return em.find(entityClass, id);
     }
 
-    public List<T> listarTodos() {
+    public List<T> findAll() {
         return em.createQuery(
                 "SELECT e FROM " + entityClass.getSimpleName() + " e",
                 entityClass
         ).getResultList();
     }
 
-    public void actualizar(T entidad) {
-        em.getTransaction().begin();
-        em.merge(entidad);
-        em.getTransaction().commit();
+    public T update(T entity) {
+        try {
+            em.getTransaction().begin();
+            T entityUpdated = em.merge(entity);
+            em.getTransaction().commit();
+            return entityUpdated;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Error actualizando entidad", e);
+        }
     }
 
-    public void eliminar(ID id) {
-        em.getTransaction().begin();
-        T entidad = buscarPorId(id);
-        if (entidad != null) {
-            em.remove(entidad);
+    public void delete(ID id) {
+        try {
+            em.getTransaction().begin();
+            T entity = em.find(entityClass, id);
+
+            if (entity != null) {
+                em.remove(entity);
+            }
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            throw new RuntimeException("Error eliminando entidad", e);
         }
-        em.getTransaction().commit();
     }
 }
