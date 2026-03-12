@@ -9,15 +9,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b1b6693-ec17-4947-a6c9-5d7fdcbae98b" name="Changes" comment="feat: Inicializar proyecto de API de Platos Típicos&#10;&#10;Este commit introduce la estructura inicial y los componentes principales para la API de Platos Típicos.&#10;&#10;Las adiciones clave incluyen:&#10;&#10;Configuración del proyecto:&#10;&#10;Un nuevo proyecto Maven (pom.xml) configurado para Java 21.&#10;&#10;Dependencias para Jakarta EE (Servlet, Persistence), Hibernate, PostgreSQL, Lombok y Jackson.&#10;&#10;Maven Wrapper (mvnw) para un entorno de compilación consistente.&#10;&#10;Entidades JPA:&#10;&#10;Modelos de dominio creados para Plato, Region, Departamento, Usuario, Rol, Categoria, Ingrediente, Comentario y Galeria.&#10;&#10;Se definen las relaciones entre entidades (por ejemplo, de Departamento a Region).&#10;&#10;persistence.xml configurado para una conexión a base de datos PostgreSQL.&#10;&#10;Capas de la aplicación:&#10;&#10;Un patrón DAO genérico (GenericDAO) para lógica de acceso a datos reutilizable.&#10;&#10;RegionDao y su implementación para obtener los datos de las regiones.&#10;&#10;Un servlet RegionController que expone un endpoint /api/region para listar todas las regiones.&#10;&#10;Un BaseServlet para el manejo de errores comunes y respuestas JSON.&#10;&#10;Un AuthFilter inicial (comentado) para futura autenticación.">
+    <list default="true" id="4b1b6693-ec17-4947-a6c9-5d7fdcbae98b" name="Changes" comment="feat: Introducir capa de servicio, DTOs y endpoints CRUD&#10;&#10;Este commit introduce una refactorización arquitectónica significativa para mejorar la estructura del proyecto y añade nueva funcionalidad CRUD.&#10;&#10;Los cambios clave incluyen:&#10;&#10;*   **Introducción de la Capa de Servicio:**&#10;    *   Se ha creado una capa de servicio para encapsular la lógica de negocio y el acceso a datos (`CategoriaService`, `RolService`).&#10;    *   La clase `RegionDaoImp` ha sido renombrada y movida a `RegionService` para reflejar su nuevo rol.&#10;    *   Los servicios ahora gestionan el ciclo de vida del `EntityManager`, asegurando que se cierre correctamente.&#10;&#10;*   **Refactorización de `BaseServlet`:**&#10;    *   `BaseServlet` se ha transformado en un controlador base genérico que maneja la lógica común para las operaciones REST (GET, POST, PUT, DELETE).&#10;    *   Centraliza la extracción de IDs de la URL, el enrutamiento a métodos específicos (listar vs. obtener por ID) y el manejo de errores.&#10;    *   Los controladores específicos ahora solo necesitan implementar los métodos de lógica de negocio (`list`, `getById`, `create`, etc.).&#10;&#10;*   **Nuevos Endpoints CRUD:**&#10;    *   Se han añadido `CategoriaController` y `RolController`, que extienden `BaseServlet`.&#10;    *   Estos exponen endpoints CRUD completos para las entidades `Categoria` (en `/api/categoria`) y `Rol` (en `/api/rol`).&#10;&#10;*   **Introducción de la Capa DTO (Data Transfer Object):**&#10;    *   Se ha creado un nuevo paquete `dto` con `RegionDto` y `UsuarioDto`.&#10;    *   El `RegionController` ahora utiliza `RegionDto` para las respuestas, desacoplando la API del modelo de persistencia interno.&#10;&#10;*   **Mejoras en la Capa DAO:**&#10;    *   `GenericDAO` se ha renombrado a `GenericDao` por convención.&#10;    *   Se ha refactorizado el manejo de transacciones dentro de `GenericDao` utilizando un método auxiliar `executeInsideTransaction` para eliminar código duplicado y mejorar la robustez.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/controller/CategoriaController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/controller/RolController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dao/CategoriaDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dao/RolDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dto/RegionDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dto/UsuarioDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/service/CategoriaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/service/RolService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dao/GenericDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dao/GenericDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/daoImp/RegionDaoImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/daoImp/RegionDaoImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/controller/BaseServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/controller/BaseServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/controller/RegionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/controller/RegionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dao/GenericDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dao/GenericDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dao/RegionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/dao/RegionDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/daoImp/RegionDaoImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ucompensar/platostipicosapi/service/RegionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -76,32 +94,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Tomcat Server.Tomcat 11.0.18.executor&quot;: &quot;Run&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.28850573&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Tomcat Server.Tomcat 11.0.18.executor": "Run",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.28850573",
+    "settings.editor.selected.configurable": "com.android.studio.ml.bot.mainConfigurable",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/META-INF" />
@@ -122,7 +140,6 @@
   </component>
   <component name="RunManager">
     <configuration name="Tomcat 11.0.18" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 11.0.18" ALTERNATIVE_JRE_ENABLED="false">
-      <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="platos-tipicos-api:war exploded">
           <settings>
@@ -226,7 +243,7 @@
       <updated>1773115733150</updated>
       <workItem from="1773115734191" duration="206000" />
       <workItem from="1773116120945" duration="14013000" />
-      <workItem from="1773199819830" duration="1222000" />
+      <workItem from="1773199819830" duration="15571000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Inicializar proyecto de API de Platos Típicos&#10;&#10;Este commit introduce la estructura inicial y los componentes principales para la API de Platos Típicos.&#10;&#10;Las adiciones clave incluyen:&#10;&#10;Configuración del proyecto:&#10;&#10;Un nuevo proyecto Maven (pom.xml) configurado para Java 21.&#10;&#10;Dependencias para Jakarta EE (Servlet, Persistence), Hibernate, PostgreSQL, Lombok y Jackson.&#10;&#10;Maven Wrapper (mvnw) para un entorno de compilación consistente.&#10;&#10;Entidades JPA:&#10;&#10;Modelos de dominio creados para Plato, Region, Departamento, Usuario, Rol, Categoria, Ingrediente, Comentario y Galeria.&#10;&#10;Se definen las relaciones entre entidades (por ejemplo, de Departamento a Region).&#10;&#10;persistence.xml configurado para una conexión a base de datos PostgreSQL.&#10;&#10;Capas de la aplicación:&#10;&#10;Un patrón DAO genérico (GenericDAO) para lógica de acceso a datos reutilizable.&#10;&#10;RegionDao y su implementación para obtener los datos de las regiones.&#10;&#10;Un servlet RegionController que expone un endpoint /api/region para listar todas las regiones.&#10;&#10;Un BaseServlet para el manejo de errores comunes y respuestas JSON.&#10;&#10;Un AuthFilter inicial (comentado) para futura autenticación.">
       <option name="closed" value="true" />
@@ -236,7 +253,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773200448350</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="refactor: Mejorar GenericDAO con métodos en inglés y manejo de transacciones&#10;&#10;Este commit refactoriza la clase `GenericDAO` para mejorar la claridad del código y la robustez en el manejo de transacciones.&#10;&#10;Los cambios clave incluyen:&#10;&#10;*   **Nomenclatura de Métodos:** Se han traducido los nombres de los métodos en `GenericDAO` de español a inglés para seguir convenciones de codificación estándar (por ejemplo, `crear` a `create`, `listarTodos` a `findAll`).&#10;&#10;*   **Manejo de Transacciones:** Se ha añadido manejo de excepciones con `try-catch` a los métodos `create`, `update` y `delete`. Esto asegura que si ocurre un error, la transacción se revierta (`rollback`), manteniendo la consistencia de la base de datos.&#10;&#10;*   **Actualización de Implementación:** La clase `RegionDaoImp` ha sido actualizada para usar el nuevo nombre de método `findAll()` en lugar de `listarTodos()`.">
+      <option name="closed" value="true" />
+      <created>1773201121284</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1773201121284</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -244,7 +269,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: Inicializar proyecto de API de Platos Típicos&#10;&#10;Este commit introduce la estructura inicial y los componentes principales para la API de Platos Típicos.&#10;&#10;Las adiciones clave incluyen:&#10;&#10;Configuración del proyecto:&#10;&#10;Un nuevo proyecto Maven (pom.xml) configurado para Java 21.&#10;&#10;Dependencias para Jakarta EE (Servlet, Persistence), Hibernate, PostgreSQL, Lombok y Jackson.&#10;&#10;Maven Wrapper (mvnw) para un entorno de compilación consistente.&#10;&#10;Entidades JPA:&#10;&#10;Modelos de dominio creados para Plato, Region, Departamento, Usuario, Rol, Categoria, Ingrediente, Comentario y Galeria.&#10;&#10;Se definen las relaciones entre entidades (por ejemplo, de Departamento a Region).&#10;&#10;persistence.xml configurado para una conexión a base de datos PostgreSQL.&#10;&#10;Capas de la aplicación:&#10;&#10;Un patrón DAO genérico (GenericDAO) para lógica de acceso a datos reutilizable.&#10;&#10;RegionDao y su implementación para obtener los datos de las regiones.&#10;&#10;Un servlet RegionController que expone un endpoint /api/region para listar todas las regiones.&#10;&#10;Un BaseServlet para el manejo de errores comunes y respuestas JSON.&#10;&#10;Un AuthFilter inicial (comentado) para futura autenticación." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Inicializar proyecto de API de Platos Típicos&#10;&#10;Este commit introduce la estructura inicial y los componentes principales para la API de Platos Típicos.&#10;&#10;Las adiciones clave incluyen:&#10;&#10;Configuración del proyecto:&#10;&#10;Un nuevo proyecto Maven (pom.xml) configurado para Java 21.&#10;&#10;Dependencias para Jakarta EE (Servlet, Persistence), Hibernate, PostgreSQL, Lombok y Jackson.&#10;&#10;Maven Wrapper (mvnw) para un entorno de compilación consistente.&#10;&#10;Entidades JPA:&#10;&#10;Modelos de dominio creados para Plato, Region, Departamento, Usuario, Rol, Categoria, Ingrediente, Comentario y Galeria.&#10;&#10;Se definen las relaciones entre entidades (por ejemplo, de Departamento a Region).&#10;&#10;persistence.xml configurado para una conexión a base de datos PostgreSQL.&#10;&#10;Capas de la aplicación:&#10;&#10;Un patrón DAO genérico (GenericDAO) para lógica de acceso a datos reutilizable.&#10;&#10;RegionDao y su implementación para obtener los datos de las regiones.&#10;&#10;Un servlet RegionController que expone un endpoint /api/region para listar todas las regiones.&#10;&#10;Un BaseServlet para el manejo de errores comunes y respuestas JSON.&#10;&#10;Un AuthFilter inicial (comentado) para futura autenticación." />
+    <MESSAGE value="refactor: Mejorar GenericDAO con métodos en inglés y manejo de transacciones&#10;&#10;Este commit refactoriza la clase `GenericDAO` para mejorar la claridad del código y la robustez en el manejo de transacciones.&#10;&#10;Los cambios clave incluyen:&#10;&#10;*   **Nomenclatura de Métodos:** Se han traducido los nombres de los métodos en `GenericDAO` de español a inglés para seguir convenciones de codificación estándar (por ejemplo, `crear` a `create`, `listarTodos` a `findAll`).&#10;&#10;*   **Manejo de Transacciones:** Se ha añadido manejo de excepciones con `try-catch` a los métodos `create`, `update` y `delete`. Esto asegura que si ocurre un error, la transacción se revierta (`rollback`), manteniendo la consistencia de la base de datos.&#10;&#10;*   **Actualización de Implementación:** La clase `RegionDaoImp` ha sido actualizada para usar el nuevo nombre de método `findAll()` en lugar de `listarTodos()`." />
+    <MESSAGE value="feat: Introducir capa de servicio, DTOs y endpoints CRUD&#10;&#10;Este commit introduce una refactorización arquitectónica significativa para mejorar la estructura del proyecto y añade nueva funcionalidad CRUD.&#10;&#10;Los cambios clave incluyen:&#10;&#10;*   **Introducción de la Capa de Servicio:**&#10;    *   Se ha creado una capa de servicio para encapsular la lógica de negocio y el acceso a datos (`CategoriaService`, `RolService`).&#10;    *   La clase `RegionDaoImp` ha sido renombrada y movida a `RegionService` para reflejar su nuevo rol.&#10;    *   Los servicios ahora gestionan el ciclo de vida del `EntityManager`, asegurando que se cierre correctamente.&#10;&#10;*   **Refactorización de `BaseServlet`:**&#10;    *   `BaseServlet` se ha transformado en un controlador base genérico que maneja la lógica común para las operaciones REST (GET, POST, PUT, DELETE).&#10;    *   Centraliza la extracción de IDs de la URL, el enrutamiento a métodos específicos (listar vs. obtener por ID) y el manejo de errores.&#10;    *   Los controladores específicos ahora solo necesitan implementar los métodos de lógica de negocio (`list`, `getById`, `create`, etc.).&#10;&#10;*   **Nuevos Endpoints CRUD:**&#10;    *   Se han añadido `CategoriaController` y `RolController`, que extienden `BaseServlet`.&#10;    *   Estos exponen endpoints CRUD completos para las entidades `Categoria` (en `/api/categoria`) y `Rol` (en `/api/rol`).&#10;&#10;*   **Introducción de la Capa DTO (Data Transfer Object):**&#10;    *   Se ha creado un nuevo paquete `dto` con `RegionDto` y `UsuarioDto`.&#10;    *   El `RegionController` ahora utiliza `RegionDto` para las respuestas, desacoplando la API del modelo de persistencia interno.&#10;&#10;*   **Mejoras en la Capa DAO:**&#10;    *   `GenericDAO` se ha renombrado a `GenericDao` por convención.&#10;    *   Se ha refactorizado el manejo de transacciones dentro de `GenericDao` utilizando un método auxiliar `executeInsideTransaction` para eliminar código duplicado y mejorar la robustez." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Introducir capa de servicio, DTOs y endpoints CRUD&#10;&#10;Este commit introduce una refactorización arquitectónica significativa para mejorar la estructura del proyecto y añade nueva funcionalidad CRUD.&#10;&#10;Los cambios clave incluyen:&#10;&#10;*   **Introducción de la Capa de Servicio:**&#10;    *   Se ha creado una capa de servicio para encapsular la lógica de negocio y el acceso a datos (`CategoriaService`, `RolService`).&#10;    *   La clase `RegionDaoImp` ha sido renombrada y movida a `RegionService` para reflejar su nuevo rol.&#10;    *   Los servicios ahora gestionan el ciclo de vida del `EntityManager`, asegurando que se cierre correctamente.&#10;&#10;*   **Refactorización de `BaseServlet`:**&#10;    *   `BaseServlet` se ha transformado en un controlador base genérico que maneja la lógica común para las operaciones REST (GET, POST, PUT, DELETE).&#10;    *   Centraliza la extracción de IDs de la URL, el enrutamiento a métodos específicos (listar vs. obtener por ID) y el manejo de errores.&#10;    *   Los controladores específicos ahora solo necesitan implementar los métodos de lógica de negocio (`list`, `getById`, `create`, etc.).&#10;&#10;*   **Nuevos Endpoints CRUD:**&#10;    *   Se han añadido `CategoriaController` y `RolController`, que extienden `BaseServlet`.&#10;    *   Estos exponen endpoints CRUD completos para las entidades `Categoria` (en `/api/categoria`) y `Rol` (en `/api/rol`).&#10;&#10;*   **Introducción de la Capa DTO (Data Transfer Object):**&#10;    *   Se ha creado un nuevo paquete `dto` con `RegionDto` y `UsuarioDto`.&#10;    *   El `RegionController` ahora utiliza `RegionDto` para las respuestas, desacoplando la API del modelo de persistencia interno.&#10;&#10;*   **Mejoras en la Capa DAO:**&#10;    *   `GenericDAO` se ha renombrado a `GenericDao` por convención.&#10;    *   Se ha refactorizado el manejo de transacciones dentro de `GenericDao` utilizando un método auxiliar `executeInsideTransaction` para eliminar código duplicado y mejorar la robustez." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
