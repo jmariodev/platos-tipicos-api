@@ -42,13 +42,25 @@ public abstract class BaseServlet extends HttpServlet {
 
         try {
 
+            String path = req.getPathInfo();
+
+            if (path != null && path.startsWith("/region/")) {
+
+                Long regionId = Long.parseLong(path.split("/")[2]);
+
+                getByRegion(req, resp, regionId);
+
+                return;
+            }
+
             Long id = getId(req);
 
             if (id == null) {
                 list(req, resp);
-            } else {
-                getById(req, resp, id);
+                return;
             }
+
+            getById(req, resp, id);
 
         } catch (Exception e) {
             manageError(resp, e);
@@ -106,5 +118,5 @@ public abstract class BaseServlet extends HttpServlet {
 
     protected void delete(HttpServletRequest req, HttpServletResponse resp, Long id) {}
 
-
+    protected void getByRegion(HttpServletRequest req, HttpServletResponse resp, Long regionId) throws Exception {}
 }

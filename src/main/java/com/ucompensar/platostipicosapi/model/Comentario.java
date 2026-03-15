@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comentario")
@@ -21,7 +22,8 @@ public class Comentario {
     private Long id;
     private String nombre;
     private String comentario;
-    private LocalDate fecha;
+    @CreationTimestamp
+    private LocalDateTime fecha;
 
     //Plato id
     @ManyToOne(fetch = FetchType.LAZY)

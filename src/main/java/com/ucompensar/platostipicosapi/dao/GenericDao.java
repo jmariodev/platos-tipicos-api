@@ -1,25 +1,43 @@
 package com.ucompensar.platostipicosapi.dao;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public abstract class GenericDao<T, ID> {
 
     protected EntityManager em;
-    private final Class<T> entityClass;
+    protected Class<T> entityClass;
 
-    protected GenericDao(EntityManager em, Class<T> entityClass) {
+    public GenericDao(EntityManager em, Class<T> entityClass) {
         this.em = em;
         this.entityClass = entityClass;
     }
 
     public void create(T entity) {
-        executeInsideTransaction(() -> {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
             em.persist(entity);
-            return entity;
-        });
+            tx.commit();
+        } catch (RuntimeException e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        }
+    }
+
+    public T update(T entity) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            T updated = em.merge(entity);
+            tx.commit();
+            return updated;
+        } catch (RuntimeException e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        }
     }
 
     public T findById(ID id) {
@@ -31,37 +49,17 @@ public abstract class GenericDao<T, ID> {
         return em.createQuery(query, entityClass).getResultList();
     }
 
-    public T update(T entity) {
-
-        return executeInsideTransaction(() -> em.merge(entity));
-    }
-
-    public void delete(Long id) {
-        executeInsideTransaction(() -> {
+    public void delete(ID id) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
             T entity = em.find(entityClass, id);
             if (entity != null) {
                 em.remove(entity);
             }
-            return entity;
-        });
-    }
-
-    private <R> R executeInsideTransaction(Supplier<R> action) {
-
-        try {
-
-            em.getTransaction().begin();
-
-            R result = action.get();
-
-            em.getTransaction().commit();
-
-            return result;
-
+            tx.commit();
         } catch (RuntimeException e) {
-
-            em.getTransaction().rollback();
-
+            if (tx.isActive()) tx.rollback();
             throw e;
         }
     }

@@ -1,49 +1,49 @@
 package com.ucompensar.platostipicosapi.controller;
 
-import com.ucompensar.platostipicosapi.model.Region;
-import com.ucompensar.platostipicosapi.service.RegionService;
+import com.ucompensar.platostipicosapi.model.Galeria;
+import com.ucompensar.platostipicosapi.service.GaleriaService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
-@WebServlet("/api/region/*")
-public class RegionController extends BaseServlet {
-    private final RegionService regionService = new RegionService();
+@WebServlet("/api/galeria/*")
+public class GaleriaController extends BaseServlet {
+    private final GaleriaService galeriaService = new GaleriaService();
 
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        List<Region> regiones = regionService.findAll();
+        List<Galeria> galerias = galeriaService.findAll();
         resp.setContentType("application/json");
-        objectMapper.writeValue(resp.getWriter(), regiones);
+        objectMapper.writeValue(resp.getWriter(), galerias);
     }
 
     @Override
     protected void getById(HttpServletRequest req, HttpServletResponse resp, Long id) throws Exception {
-        Region region = regionService.findById(id);
+        Galeria galeria = galeriaService.findById(id);
         resp.setContentType("application/json");
-        objectMapper.writeValue(resp.getWriter(), region);
+        objectMapper.writeValue(resp.getWriter(), galeria);
     }
 
     @Override
     protected void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        Region region = objectMapper.readValue(req.getInputStream(), Region.class);
-        regionService.create(region);
+        Galeria galeria = objectMapper.readValue(req.getInputStream(), Galeria.class);
+        galeriaService.create(galeria);
         resp.setStatus(HttpServletResponse.SC_CREATED);
-        objectMapper.writeValue(resp.getWriter(), region);
+        objectMapper.writeValue(resp.getWriter(), galeria);
     }
 
     @Override
     protected void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        Region region = objectMapper.readValue(req.getInputStream(), Region.class);
-        Region updated = regionService.update(region);
+        Galeria galeria = objectMapper.readValue(req.getInputStream(), Galeria.class);
+        Galeria updated = galeriaService.update(galeria);
         objectMapper.writeValue(resp.getWriter(), updated);
     }
 
     @Override
     protected void delete(HttpServletRequest req, HttpServletResponse resp, Long id) {
-        regionService.delete(id);
+        galeriaService.delete(id);
         resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 }

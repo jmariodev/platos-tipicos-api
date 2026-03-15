@@ -4,6 +4,7 @@ import com.ucompensar.platostipicosapi.model.Region;
 import jakarta.persistence.EntityManager;
 
 public class RegionDao extends GenericDao<Region, Long> {
+
     public RegionDao(EntityManager em, Class<Region> entityClass) {
         super(em, entityClass);
     }

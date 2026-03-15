@@ -19,7 +19,7 @@ public class Departamento {
     private Long id;
     private String nombre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "region_id", nullable = false)
     private Region region;
 }

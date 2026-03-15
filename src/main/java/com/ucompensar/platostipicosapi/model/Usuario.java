@@ -22,6 +22,7 @@ public class Usuario {
     private String nombre;
     private String usuario;
     private String contrasena;
+    private boolean estado;
 
     @ManyToMany
     @JoinTable(

@@ -18,4 +18,7 @@ public class Region {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
+    private String descripcion;
+    private String imagen;
+    private String color;
 }

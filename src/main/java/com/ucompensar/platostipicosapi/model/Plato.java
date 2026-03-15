@@ -29,7 +29,7 @@ public class Plato {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id", nullable = false)
-    private Categoria categorias;
+    private Categoria categoria;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "departamento_id", nullable = false)
@@ -45,4 +45,9 @@ public class Plato {
     inverseJoinColumns = @JoinColumn( name = "ingrediente_id"))
     private List<Ingrediente> ingredientes;
 
+    @OneToMany(mappedBy = "plato")
+    private List<Comentario> comentarios;
+
+    @OneToMany(mappedBy = "plato", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Galeria> galeria;
 }

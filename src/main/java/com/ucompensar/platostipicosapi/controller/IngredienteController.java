@@ -1,49 +1,49 @@
 package com.ucompensar.platostipicosapi.controller;
 
-import com.ucompensar.platostipicosapi.model.Region;
-import com.ucompensar.platostipicosapi.service.RegionService;
+import com.ucompensar.platostipicosapi.model.Ingrediente;
+import com.ucompensar.platostipicosapi.service.IngredienteService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
-@WebServlet("/api/region/*")
-public class RegionController extends BaseServlet {
-    private final RegionService regionService = new RegionService();
+@WebServlet("/api/ingrediente/*")
+public class IngredienteController extends BaseServlet {
+    private final IngredienteService ingredienteService = new IngredienteService();
 
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        List<Region> regiones = regionService.findAll();
+        List<Ingrediente> ingredientes = ingredienteService.findAll();
         resp.setContentType("application/json");
-        objectMapper.writeValue(resp.getWriter(), regiones);
+        objectMapper.writeValue(resp.getWriter(), ingredientes);
     }
 
     @Override
     protected void getById(HttpServletRequest req, HttpServletResponse resp, Long id) throws Exception {
-        Region region = regionService.findById(id);
+        Ingrediente ingrediente = ingredienteService.findById(id);
         resp.setContentType("application/json");
-        objectMapper.writeValue(resp.getWriter(), region);
+        objectMapper.writeValue(resp.getWriter(), ingrediente);
     }
 
     @Override
     protected void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        Region region = objectMapper.readValue(req.getInputStream(), Region.class);
-        regionService.create(region);
+        Ingrediente ingrediente = objectMapper.readValue(req.getInputStream(), Ingrediente.class);
+        ingredienteService.create(ingrediente);
         resp.setStatus(HttpServletResponse.SC_CREATED);
-        objectMapper.writeValue(resp.getWriter(), region);
+        objectMapper.writeValue(resp.getWriter(), ingrediente);
     }
 
     @Override
     protected void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        Region region = objectMapper.readValue(req.getInputStream(), Region.class);
-        Region updated = regionService.update(region);
+        Ingrediente ingrediente = objectMapper.readValue(req.getInputStream(), Ingrediente.class);
+        Ingrediente updated = ingredienteService.update(ingrediente);
         objectMapper.writeValue(resp.getWriter(), updated);
     }
 
     @Override
     protected void delete(HttpServletRequest req, HttpServletResponse resp, Long id) {
-        regionService.delete(id);
+        ingredienteService.delete(id);
         resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 }
