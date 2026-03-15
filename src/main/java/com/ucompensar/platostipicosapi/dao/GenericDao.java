@@ -15,12 +15,13 @@ public abstract class GenericDao<T, ID> {
         this.entityClass = entityClass;
     }
 
-    public void create(T entity) {
+    public T create(T entity) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
             em.persist(entity);
             tx.commit();
+            return entity;
         } catch (RuntimeException e) {
             if (tx.isActive()) tx.rollback();
             throw e;

@@ -34,7 +34,7 @@ public class PlatoService {
         }
     }
 
-    public void create(Plato plato) {
+    public PlatoDto create(Plato plato) {
         plato.setId(null);
 
         if (plato.getGaleria() != null) {
@@ -43,18 +43,18 @@ public class PlatoService {
 
         try(EntityManager em = JPAUtil.getEntityManager()){
             PlatoDao platoDao = new PlatoDao(em, Plato.class);
-            platoDao.create(plato);
+            return PlatoDto.toDto(platoDao.create(plato));
         }
     }
 
-    public Plato update(Plato plato) {
+    public PlatoDto update(Plato plato) {
         if (plato.getGaleria() != null) {
             plato.getGaleria().forEach(g -> g.setPlato(plato));
         }
 
         try(EntityManager em = JPAUtil.getEntityManager()) {
             PlatoDao platoDao = new PlatoDao(em, Plato.class);
-            return platoDao.update(plato);
+            return PlatoDto.toDto(platoDao.update(plato));
         }
     }
 

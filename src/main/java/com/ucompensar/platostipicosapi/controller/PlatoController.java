@@ -37,15 +37,15 @@ public class PlatoController extends BaseServlet {
     @Override
     protected void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Plato plato = objectMapper.readValue(req.getInputStream(), Plato.class);
-        platoService.create(plato);
+        PlatoDto platoDto = platoService.create(plato);
         resp.setStatus(HttpServletResponse.SC_OK);
-        objectMapper.writeValue(resp.getWriter(), plato);
+        objectMapper.writeValue(resp.getWriter(), platoDto);
     }
 
     @Override
     protected void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Plato plato = objectMapper.readValue(req.getInputStream(), Plato.class);
-        Plato updated = platoService.update(plato);
+        PlatoDto updated = platoService.update(plato);
 
         resp.setStatus(HttpServletResponse.SC_OK);
         objectMapper.writeValue(resp.getWriter(), updated);

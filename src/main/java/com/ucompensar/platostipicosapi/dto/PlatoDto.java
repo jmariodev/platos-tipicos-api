@@ -28,6 +28,24 @@ public class PlatoDto {
 
 
     public static PlatoDto toDto(Plato plato) {
+        if (plato.getComentarios() == null){
+            // Plato sin comentarios, al actualizar o crear
+            return PlatoDto.builder()
+                    .id(plato.getId())
+                    .nombre(plato.getNombre())
+                    .porciones(plato.getPorciones())
+                    .destacado(plato.isDestacado())
+                    .tiempoPreparacion(plato.getTiempoPreparacion())
+                    .datoCurioso(plato.getDatoCurioso())
+                    .historia(plato.getHistoria())
+                    .descripcion(plato.getDescripcion())
+                    .departamento(DepartamentoDto.toDto(plato.getDepartamento()))
+                    .categoria(CategoriaDto.toDto(plato.getCategoria()))
+                    .ingredientes(plato.getIngredientes().stream().map(IngredienteDto::toDto).toList())
+                    .galeria(plato.getGaleria().stream().map(GaleriaDto::toDto).toList())
+                    .build();
+        }
+
         return PlatoDto.builder()
                 .id(plato.getId())
                 .nombre(plato.getNombre())
